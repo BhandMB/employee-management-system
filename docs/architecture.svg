@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="430" viewBox="0 0 1000 430">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="500" y="42" text-anchor="middle" font-family="Arial" font-size="24" font-weight="700">Employee Management System — Architecture</text>
+<g font-family="Arial" text-anchor="middle">
+<rect x="70" y="95" width="200" height="80" rx="12" fill="#e8f0fe" stroke="#2f5bea" stroke-width="2"/>
+<text x="170" y="128" font-size="18" font-weight="700">Browser UI</text><text x="170" y="153" font-size="14">HTML • JS • Bootstrap</text>
+<rect x="400" y="95" width="200" height="80" rx="12" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+<text x="500" y="128" font-size="18" font-weight="700">REST Controller</text><text x="500" y="153" font-size="14">/employees</text>
+<rect x="730" y="95" width="200" height="80" rx="12" fill="#fff3e0" stroke="#ef6c00" stroke-width="2"/>
+<text x="830" y="128" font-size="18" font-weight="700">Service Layer</text><text x="830" y="153" font-size="14">Business logic</text>
+<rect x="400" y="275" width="200" height="80" rx="12" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2"/>
+<text x="500" y="308" font-size="18" font-weight="700">JPA Repository</text><text x="500" y="333" font-size="14">Spring Data JPA</text>
+<rect x="730" y="275" width="200" height="80" rx="12" fill="#e0f7fa" stroke="#00838f" stroke-width="2"/>
+<text x="830" y="308" font-size="18" font-weight="700">MySQL</text><text x="830" y="333" font-size="14">Persistent storage</text>
+<path d="M270 135 H400" stroke="#555" stroke-width="3" marker-end="url(#a)"/><path d="M600 135 H730" stroke="#555" stroke-width="3" marker-end="url(#a)"/>
+<path d="M830 175 V275" stroke="#555" stroke-width="3" marker-end="url(#a)"/><path d="M730 315 H600" stroke="#555" stroke-width="3" marker-end="url(#a)"/>
+</g>
+<defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#555"/></marker></defs>
+</svg>
