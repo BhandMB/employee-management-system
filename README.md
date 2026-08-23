@@ -217,7 +217,7 @@ Recommended screenshots for the repository:
 - Docker Compose for MySQL
 
 ## 👨‍💻 Author
-
+/////////////////////////////////
 **Mayur Bhand**
 
 - GitHub: [BhandMB](https://github.com/BhandMB)
