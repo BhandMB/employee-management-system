@@ -19,10 +19,27 @@ public class EmployeeService {
     }
 
     public Employee addEmployee(Employee emp) {
+        emp.setActive(true);
         return repository.save(emp);
     }
 
     public void deleteEmployee(Long id) {
         repository.deleteById(id);
+    }
+
+    public long getTotalEmployees() {
+        return repository.count();
+    }
+
+    public long getActiveEmployees() {
+        return repository.countByActiveTrue();
+    }
+
+    public long getDepartmentCount() {
+        return repository.countDepartments();
+    }
+
+    public double getTotalPayroll() {
+        return repository.totalActivePayroll();
     }
 }
