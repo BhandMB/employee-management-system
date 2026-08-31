@@ -16,10 +16,10 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        CookieCsrfTokenRepository csrf = CookieCsrfTokenRepository.withHttpOnlyFalse();
+        CookieCsrfTokenRepository csrf=CookieCsrfTokenRepository.withHttpOnlyFalse();
         http.csrf(c -> c.csrfTokenRepository(csrf))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/login", "/css/**", "/js/**", "/images/**", "/favicon.ico", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                .requestMatchers("/login", "/css/**", "/js/**", "/images/**", "/favicon.ico", "/swagger-ui/**", "/v3/api-docs/**", "/actuator/health").permitAll()
                 .requestMatchers("/employees/**").authenticated()
                 .anyRequest().authenticated())
             .formLogin(form -> form.loginPage("/login").defaultSuccessUrl("/", true).permitAll())
