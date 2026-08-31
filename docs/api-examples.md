@@ -1,54 +1,54 @@
-# API Examples
+# REST API Guide
 
-The API is available at `http://localhost:8080` when the application is running.
+The API is served from the same Spring Boot application. Authenticate through `/login` first when using browser/session requests.
 
-## List employees
+Interactive documentation: `/swagger-ui.html`  
+OpenAPI JSON: `/v3/api-docs`
 
-```bash
-curl http://localhost:8080/employees
-```
+## Employee endpoints
 
-## Create an employee
+| Method | Endpoint | Roles | Purpose |
+|---|---|---|---|
+| GET | `/employees` | ADMIN, HR, EMPLOYEE | Search/filter/paginate |
+| GET | `/employees/{id}` | ADMIN, HR, EMPLOYEE | Get one employee |
+| GET | `/employees/stats` | ADMIN, HR, EMPLOYEE | Dashboard analytics |
+| POST | `/employees` | ADMIN, HR | Create |
+| PUT | `/employees/{id}` | ADMIN, HR | Update |
+| DELETE | `/employees/{id}` | ADMIN | Delete |
 
-```bash
-curl -X POST http://localhost:8080/employees \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Mayur Bhand",
-    "department": "Engineering",
-    "email": "mayur@example.com",
-    "salary": 65000
-  }'
-```
-
-## Delete an employee
-
-```bash
-curl -X DELETE http://localhost:8080/employees/1
-```
-
-## Typical response
-
-```json
-{
-  "id": 1,
-  "name": "Mayur Bhand",
-  "department": "Engineering",
-  "email": "mayur@example.com",
-  "salary": 65000
-}
-```
-
-## Error example
-
-If an employee ID does not exist, the API returns an appropriate HTTP error response rather than silently succeeding. The exact response body is controlled by the Spring Boot exception handling configured by the application.
-
-## Browser UI
-
-The project also serves a Bootstrap-based employee dashboard from the Spring Boot application:
+## Search and pagination
 
 ```text
-http://localhost:8080/
+GET /employees?search=anita&department=Engineering&active=true&page=0&size=10
 ```
 
-For authentic UI screenshots, capture the running application locally after configuring MySQL. This keeps the repository documentation honest and shows the real application rather than a generated mockup.
+The response is a Spring `Page` containing `content`, `totalElements`, `totalPages`, `number`, `size`, `first` and `last`.
+
+## Create
+
+```json
+{"name":"Mayur Bhand","department":"Engineering","email":"mayur@example.com","salary":65000}
+```
+
+## Update
+
+```http
+PUT /employees/1
+Content-Type: application/json
+```
+
+```json
+{"name":"Mayur Bhand","department":"Engineering","email":"mayur@example.com","salary":70000,"active":true}
+```
+
+## Analytics
+
+`GET /employees/stats` returns total employees, active employees, distinct departments, active payroll and department distribution.
+
+## Error format
+
+```json
+{"timestamp":"2026-08-31T13:00:00Z","status":404,"message":"Employee not found: 99"}
+```
+
+Validation errors additionally contain a `fields` object.
