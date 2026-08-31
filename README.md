@@ -1,139 +1,147 @@
-# 👨‍💼 Employee Management System
+# 👥 Employee Management System
 
 [![CI](https://github.com/BhandMB/employee-management-system/actions/workflows/ci.yml/badge.svg)](https://github.com/BhandMB/employee-management-system/actions/workflows/ci.yml)
-[![Java](https://img.shields.io/badge/Java-17-orange?logo=openjdk)](https://www.oracle.com/java/)
+[![Java 17](https://img.shields.io/badge/Java-17-orange?logo=openjdk)](https://www.oracle.com/java/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1.0-6DB33F?logo=springboot)](https://spring.io/projects/spring-boot)
-[![MySQL](https://img.shields.io/badge/MySQL-8-4479A1?logo=mysql&logoColor=white)](https://www.mysql.com/)
+[![MySQL 8](https://img.shields.io/badge/MySQL-8-4479A1?logo=mysql&logoColor=white)](https://www.mysql.com/)
 
-A recruiter-ready full-stack employee management application built with **Java 17, Spring Boot, Spring Data JPA, MySQL, REST APIs, Bootstrap, JavaScript, JUnit 5, Mockito, MockMvc, Maven, and GitHub Actions**.
+A portfolio-ready **full-stack Employee Management System** built with Java 17 and Spring Boot. It combines a REST API, MySQL persistence, responsive dashboard, validation, authentication, automated tests, and GitHub Actions CI.
 
-## 🎯 Why this project matters
+## ✨ Highlights
 
-This project demonstrates an end-to-end software development workflow:
-
-- RESTful employee APIs
-- Layered Controller → Service → Repository architecture
-- Spring Data JPA persistence
-- MySQL integration
-- Browser-based Bootstrap UI
-- CRUD operations
-- Automated controller and service tests
-- CI build and test automation
-- Environment-based database configuration
+- 📊 Live dashboard: total employees, active employees, departments and active payroll
+- 👤 Employee directory with status and salary information
+- ➕ Create employees with server-side validation
+- 🗑️ Delete employees through a REST API
+- 🔐 Spring Security form login with environment-based credentials
+- 🗄️ MySQL + Spring Data JPA persistence
+- 🧪 JUnit 5, Mockito and MockMvc tests
+- ⚙️ Environment-based configuration with no committed secrets
+- 🚀 Maven build and GitHub Actions CI
+- 📱 Responsive Bootstrap-based frontend
 
 ## 🏗️ Architecture
 
 ![Architecture](docs/architecture.svg)
 
 ```text
-Browser
-   │
-   ▼
-Bootstrap / JavaScript UI
-   │ HTTP / JSON
-   ▼
-Spring Boot REST Controller
-   │
-   ▼
-Service Layer
-   │
-   ▼
-Spring Data JPA Repository
-   │
-   ▼
-MySQL
+┌─────────────────────┐
+│ Browser / Bootstrap │
+│ HTML + JavaScript   │
+└──────────┬──────────┘
+           │ HTTP / JSON
+           ▼
+┌─────────────────────┐
+│ Spring Security     │
+│ Authentication      │
+└──────────┬──────────┘
+           ▼
+┌─────────────────────┐
+│ REST Controller     │
+└──────────┬──────────┘
+           ▼
+┌─────────────────────┐
+│ Service Layer       │
+└──────────┬──────────┘
+           ▼
+┌─────────────────────┐
+│ Spring Data JPA     │
+└──────────┬──────────┘
+           ▼
+┌─────────────────────┐
+│ MySQL 8             │
+└─────────────────────┘
 ```
-
-## ✨ Features
-
-- View all employees
-- Add employees
-- Delete employees
-- REST endpoints under `/employees`
-- Browser-based employee dashboard
-- JUnit 5 + Mockito + MockMvc tests
-- Maven build
-- GitHub Actions CI
-- Environment-variable database credentials
 
 ## 🛠️ Tech Stack
 
-| Area | Technology |
+| Layer | Technology |
 |---|---|
 | Language | Java 17 |
 | Backend | Spring Boot 4.1.0 |
-| API | Spring Web / REST |
+| Web/API | Spring Web, REST |
+| Security | Spring Security |
 | Persistence | Spring Data JPA / Hibernate |
 | Database | MySQL 8+ |
+| Validation | Jakarta Bean Validation |
 | Frontend | HTML, CSS, JavaScript, Bootstrap 5 |
 | Testing | JUnit 5, Mockito, MockMvc |
-| Build | Maven 3.9+ |
-| CI | GitHub Actions |
+| Build | Maven |
+| CI/CD | GitHub Actions |
 
 ## 📁 Project Structure
 
 ```text
 src/main/java/com/example/employeemanagement/
-├── controller/       # REST endpoints
-├── service/          # Business logic
-├── repository/       # Data access
-└── model/            # Employee entity
+├── config/             # Security configuration
+├── controller/         # REST and page controllers
+├── model/              # JPA entities
+├── repository/         # Spring Data repositories
+└── service/            # Business logic
 
-src/main/resources/static/
-├── index.html        # Employee dashboard
-├── add.html          # Add employee page
-└── script.js         # Frontend API integration
+src/main/resources/
+├── static/             # Dashboard, add form and JavaScript
+├── templates/          # Login page
+├── application.properties
+└── application-example.properties
 
-src/test/java/com/example/employeemanagement/
-├── controller/       # MockMvc API tests
-├── service/          # Mockito service tests
-└── model/            # Entity tests
+docs/
+├── architecture.svg
+└── api-examples.md
 ```
 
-## 🚀 Run locally
+## 🚀 Run Locally
 
-### Prerequisites
+### 1. Prerequisites
 
 - JDK 17+
 - Maven 3.9+
 - MySQL 8+
 
-Create the database:
+### 2. Create the database
 
 ```sql
 CREATE DATABASE emsdb;
 ```
 
-Set environment variables before starting the application:
+### 3. Configure environment variables
 
-```text
-DB_URL=jdbc:mysql://localhost:3306/emsdb
-DB_USERNAME=root
-DB_PASSWORD=your_password
+Windows PowerShell:
+
+```powershell
+$env:DB_URL="jdbc:mysql://localhost:3306/emsdb"
+$env:DB_USERNAME="root"
+$env:DB_PASSWORD="your_mysql_password"
+$env:APP_SECURITY_USERNAME="admin"
+$env:APP_SECURITY_PASSWORD="change_this_password"
 ```
 
-Then run:
+The application has safe development defaults for the login username/password, but **use environment variables for real credentials**.
+
+### 4. Build and test
 
 ```bash
 mvn clean test
+```
+
+### 5. Start the application
+
+```bash
 mvn spring-boot:run
 ```
 
-Open the web application:
+Open `http://localhost:8080/` and sign in.
 
-```text
-http://localhost:8080/
-```
+## 🔌 REST API
 
-## 🔌 API
-
-| Method | Endpoint | Purpose |
+| Method | Endpoint | Description |
 |---|---|---|
-| GET | `/employees` | List employees |
-| POST | `/employees` | Create employee |
-| DELETE | `/employees/{id}` | Delete employee |
+| GET | `/employees` | List all employees |
+| GET | `/employees/stats` | Dashboard statistics |
+| POST | `/employees` | Create an employee |
+| DELETE | `/employees/{id}` | Delete an employee |
 
-### Create employee
+### Example request
 
 ```http
 POST /employees
@@ -149,76 +157,69 @@ Content-Type: application/json
 }
 ```
 
-### Example response
+### Dashboard response
 
 ```json
 {
-  "id": 1,
-  "name": "Mayur Bhand",
-  "department": "Engineering",
-  "email": "mayur@example.com",
-  "salary": 65000
+  "totalEmployees": 10,
+  "activeEmployees": 8,
+  "departments": 4,
+  "payroll": 650000.0
 }
 ```
 
-More copy-paste-ready examples are available in [`docs/api-examples.md`](docs/api-examples.md).
+See [`docs/api-examples.md`](docs/api-examples.md) for additional examples.
+
+## 🔐 Security
+
+Spring Security protects the application behind a login page. The configured account is created in memory from environment variables, while employee API requests require an authenticated session.
+
+**Never commit passwords, `.env` files, API keys or production credentials.**
 
 ## 🧪 Testing
 
-The repository includes:
-
-- **MockMvc controller tests** for HTTP/API behavior
-- **Mockito service tests** for business logic
-- **Model tests** for the Employee domain object
-
-Run everything locally:
+The project contains controller, service and model tests. Run them with:
 
 ```bash
 mvn test
 ```
 
-## ⚙️ Continuous Integration
+GitHub Actions also builds and tests the project on pushes to `main`.
 
-Every push to `main` runs GitHub Actions with JDK 17 and Maven. The CI job builds the application and executes the test suite.
+## 📊 Dashboard
 
-## 🔐 Configuration & Security
+The dashboard calculates its values directly from the employee database:
 
-Database credentials are supplied through environment variables. No real password is committed to the repository.
+- **Total Employees** → total employee records
+- **Active Employees** → employees whose `active` flag is true
+- **Departments** → distinct non-empty departments
+- **Active Payroll** → sum of salaries for active employees
 
-For local development, start from:
+This fixes the previous static/empty dashboard statistics problem by providing a dedicated `/employees/stats` backend endpoint and connecting the frontend cards to it.
 
-`src/main/resources/application-example.properties`
+## 📸 Portfolio Screenshots
 
-Never commit `.env` files, passwords, API keys, or production credentials.
+For a strong GitHub portfolio, capture screenshots from the real running application:
 
-## 📸 Screenshots
+1. Login screen
+2. Dashboard with populated statistics
+3. Employee directory
+4. Add employee form
+5. Successful create/delete operation
 
-The application includes a real Bootstrap browser UI. To keep the repository honest, screenshots should be captured from the **running application** after MySQL is configured rather than using generated mockups.
-
-Recommended screenshots for the repository:
-
-1. Employee dashboard
-2. Add employee form
-3. Successful employee creation
-4. API response in Postman/Swagger
-
-## 📚 Documentation
-
-- [API Examples](docs/api-examples.md)
-- [Architecture Diagram](docs/architecture.svg)
-
-## 🔭 Future improvements
+## 🔭 Roadmap
 
 - Employee update endpoint
-- Pagination and search
-- DTOs and Bean Validation
-- Global exception handling
-- Authentication and role-based access
-- Docker Compose for MySQL
+- Search, filtering and pagination
+- DTO layer and global exception handling
+- Persistent users and database-backed roles
+- Audit logging
+- Docker Compose for application + MySQL
+- OpenAPI / Swagger documentation
 
 ## 👨‍💻 Author
 
 **Mayur Bhand**
 
-- GitHub: [BhandMB](https://github.com/BhandMB)
-- LinkedIn: [mayurbhand](https://www.linkedin.com/in/mayurbhand/)
+- GitHub: https://github.com/BhandMB
+- LinkedIn: https://www.linkedin.com/in/mayurbhand/
