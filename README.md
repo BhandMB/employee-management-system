@@ -5,52 +5,50 @@
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1.0-6DB33F?logo=springboot)](https://spring.io/projects/spring-boot)
 [![MySQL 8](https://img.shields.io/badge/MySQL-8-4479A1?logo=mysql&logoColor=white)](https://www.mysql.com/)
 
-A portfolio-ready **full-stack Employee Management System** built with Java 17 and Spring Boot. It combines a REST API, MySQL persistence, responsive dashboard, validation, authentication, automated tests, and GitHub Actions CI.
+A portfolio-ready full-stack Employee Management System built with **Java 17, Spring Boot, Spring Data JPA, MySQL, Spring Security, REST APIs, Bootstrap and JavaScript**. It demonstrates production-oriented backend architecture, database-backed authentication, RBAC, validation, pagination, analytics, OpenAPI documentation, automated tests and Docker deployment.
 
-## ✨ Highlights
+## ⭐ Features
 
-- 📊 Live dashboard: total employees, active employees, departments and active payroll
-- 👤 Employee directory with status and salary information
-- ➕ Create employees with server-side validation
-- 🗑️ Delete employees through a REST API
-- 🔐 Spring Security form login with environment-based credentials
-- 🗄️ MySQL + Spring Data JPA persistence
-- 🧪 JUnit 5, Mockito and MockMvc tests
-- ⚙️ Environment-based configuration with no committed secrets
-- 🚀 Maven build and GitHub Actions CI
-- 📱 Responsive Bootstrap-based frontend
+- 📊 Live dashboard with employee, department and payroll analytics
+- 🔎 Search, department filtering, active/inactive filtering and pagination
+- ➕ Create and ✏️ update employees
+- 🗑️ Admin-only employee deletion
+- 🔐 Persistent MySQL users with `ADMIN`, `HR` and `EMPLOYEE` roles
+- 🛡️ Method-level role authorization and cookie-based CSRF protection
+- 🧱 DTO layer separating API contracts from JPA entities
+- ⚠️ Global validation, not-found, conflict and server error handling
+- 📚 Swagger UI + OpenAPI JSON
+- 🧪 Unit/controller tests plus Spring Boot integration tests with H2
+- 🐳 Dockerfile + Docker Compose for app and MySQL
+- ❤️ Actuator health/metrics endpoints
+- ⚙️ Environment-driven configuration with no committed credentials
+- 🚀 Production profile with `validate` schema mode and response compression
 
 ## 🏗️ Architecture
 
-![Architecture](docs/architecture.svg)
-
 ```text
-┌─────────────────────┐
-│ Browser / Bootstrap │
-│ HTML + JavaScript   │
-└──────────┬──────────┘
-           │ HTTP / JSON
-           ▼
-┌─────────────────────┐
-│ Spring Security     │
-│ Authentication      │
-└──────────┬──────────┘
-           ▼
-┌─────────────────────┐
-│ REST Controller     │
-└──────────┬──────────┘
-           ▼
-┌─────────────────────┐
-│ Service Layer       │
-└──────────┬──────────┘
-           ▼
-┌─────────────────────┐
-│ Spring Data JPA     │
-└──────────┬──────────┘
-           ▼
-┌─────────────────────┐
-│ MySQL 8             │
-└─────────────────────┘
+Browser / Bootstrap / JavaScript
+            │
+            ▼
+     Spring Security + CSRF
+            │
+            ▼
+       REST Controllers
+            │
+            ▼
+        DTO Contracts
+            │
+            ▼
+       Service Layer
+            │
+            ▼
+ Spring Data JPA Repositories
+        │             │
+        ▼             ▼
+     MySQL        Global Errors
+
+OpenAPI / Swagger ───── REST API
+Actuator ────────────── Health & Metrics
 ```
 
 ## 🛠️ Tech Stack
@@ -59,163 +57,162 @@ A portfolio-ready **full-stack Employee Management System** built with Java 17 a
 |---|---|
 | Language | Java 17 |
 | Backend | Spring Boot 4.1.0 |
-| Web/API | Spring Web, REST |
-| Security | Spring Security |
+| Security | Spring Security, BCrypt, RBAC, CSRF |
 | Persistence | Spring Data JPA / Hibernate |
 | Database | MySQL 8+ |
+| API | REST + OpenAPI 3 / Swagger UI |
 | Validation | Jakarta Bean Validation |
 | Frontend | HTML, CSS, JavaScript, Bootstrap 5 |
-| Testing | JUnit 5, Mockito, MockMvc |
-| Build | Maven |
+| Testing | JUnit 5, Mockito, MockMvc, H2 |
+| Operations | Actuator, Docker, Docker Compose |
 | CI/CD | GitHub Actions |
+| Build | Maven |
 
-## 📁 Project Structure
+## 👥 Roles & Permissions
 
-```text
-src/main/java/com/example/employeemanagement/
-├── config/             # Security configuration
-├── controller/         # REST and page controllers
-├── model/              # JPA entities
-├── repository/         # Spring Data repositories
-└── service/            # Business logic
+| Capability | ADMIN | HR | EMPLOYEE |
+|---|:---:|:---:|:---:|
+| View employees | ✅ | ✅ | ✅ |
+| Search/filter/paginate | ✅ | ✅ | ✅ |
+| Dashboard analytics | ✅ | ✅ | ✅ |
+| Create employee | ✅ | ✅ | ❌ |
+| Update employee | ✅ | ✅ | ❌ |
+| Delete employee | ✅ | ❌ | ❌ |
 
-src/main/resources/
-├── static/             # Dashboard, add form and JavaScript
-├── templates/          # Login page
-├── application.properties
-└── application-example.properties
+Users are stored in the `app_users` table and passwords are BCrypt-hashed. Demo users are seeded only when missing.
 
-docs/
-├── architecture.svg
-└── api-examples.md
-```
+## 🚀 Local setup
 
-## 🚀 Run Locally
-
-### 1. Prerequisites
+### Prerequisites
 
 - JDK 17+
 - Maven 3.9+
 - MySQL 8+
 
-### 2. Create the database
+Create the database:
 
 ```sql
 CREATE DATABASE emsdb;
 ```
 
-### 3. Configure environment variables
-
-Windows PowerShell:
+PowerShell configuration:
 
 ```powershell
 $env:DB_URL="jdbc:mysql://localhost:3306/emsdb"
 $env:DB_USERNAME="root"
 $env:DB_PASSWORD="your_mysql_password"
-$env:APP_SECURITY_USERNAME="admin"
-$env:APP_SECURITY_PASSWORD="change_this_password"
+$env:APP_ADMIN_PASSWORD="change-me"
+$env:APP_HR_PASSWORD="change-me"
+$env:APP_EMPLOYEE_PASSWORD="change-me"
 ```
 
-The application has safe development defaults for the login username/password, but **use environment variables for real credentials**.
-
-### 4. Build and test
+Build, test and run:
 
 ```bash
 mvn clean test
-```
-
-### 5. Start the application
-
-```bash
 mvn spring-boot:run
 ```
 
-Open `http://localhost:8080/` and sign in.
+Open `http://localhost:8080/`.
 
-## 🔌 REST API
+### Demo accounts
 
-| Method | Endpoint | Description |
+| Username | Role | Default development password |
 |---|---|---|
-| GET | `/employees` | List all employees |
-| GET | `/employees/stats` | Dashboard statistics |
-| POST | `/employees` | Create an employee |
-| DELETE | `/employees/{id}` | Delete an employee |
+| admin | ADMIN | admin123 |
+| hr | HR | hr123 |
+| employee | EMPLOYEE | employee123 |
 
-### Example request
+Change these passwords through environment variables before any shared or production deployment.
 
-```http
-POST /employees
-Content-Type: application/json
+## 🐳 Docker Compose
+
+Build the application first, then start both services:
+
+```bash
+mvn clean package -DskipTests
+docker compose up --build
 ```
 
-```json
-{
-  "name": "Mayur Bhand",
-  "department": "Engineering",
-  "email": "mayur@example.com",
-  "salary": 65000
-}
+The application will be available on port `8080` and MySQL on `3306`. Compose persists database data in the `mysql_data` volume.
+
+For production, set strong values for `DB_PASSWORD`, `APP_ADMIN_PASSWORD`, `APP_HR_PASSWORD` and `APP_EMPLOYEE_PASSWORD` rather than using defaults.
+
+## ☁️ Production deployment
+
+Use the production profile with a managed MySQL database:
+
+```bash
+java -jar target/employee-management-2.0.0.jar --spring.profiles.active=prod
 ```
 
-### Dashboard response
+Recommended production environment variables:
 
-```json
-{
-  "totalEmployees": 10,
-  "activeEmployees": 8,
-  "departments": 4,
-  "payroll": 650000.0
-}
+```text
+DB_URL=jdbc:mysql://<host>:3306/emsdb?useSSL=true&serverTimezone=UTC
+DB_USERNAME=<database-user>
+DB_PASSWORD=<strong-secret>
+DDL_AUTO=validate
+APP_ADMIN_PASSWORD=<strong-secret>
+APP_HR_PASSWORD=<strong-secret>
+APP_EMPLOYEE_PASSWORD=<strong-secret>
+SERVER_PORT=8080
 ```
 
-See [`docs/api-examples.md`](docs/api-examples.md) for additional examples.
+Production configuration intentionally uses `validate` rather than automatically modifying the schema. Apply schema migrations through a migration tool before deploying major database changes.
 
-## 🔐 Security
+## 📚 API & Swagger
 
-Spring Security protects the application behind a login page. The configured account is created in memory from environment variables, while employee API requests require an authenticated session.
+When running locally:
 
-**Never commit passwords, `.env` files, API keys or production credentials.**
+- Swagger UI: `http://localhost:8080/swagger-ui.html`
+- OpenAPI JSON: `http://localhost:8080/v3/api-docs`
+- Health: `http://localhost:8080/actuator/health`
+
+See [`docs/api-examples.md`](docs/api-examples.md) for endpoint examples.
 
 ## 🧪 Testing
-
-The project contains controller, service and model tests. Run them with:
 
 ```bash
 mvn test
 ```
 
-GitHub Actions also builds and tests the project on pushes to `main`.
+The suite includes controller tests and full Spring Boot integration tests covering CRUD, pagination/search, validation, database persistence and role restrictions. H2 keeps CI tests isolated from a developer's MySQL instance.
 
-## 📊 Dashboard
+## 📁 Project structure
 
-The dashboard calculates its values directly from the employee database:
+```text
+src/main/java/com/example/employeemanagement/
+├── config/        # Security, seed data, OpenAPI
+├── controller/    # REST/page controllers
+├── dto/           # API request/response contracts
+├── exception/     # Domain + global API errors
+├── model/         # JPA entities and roles
+├── repository/    # Database access
+└── service/       # Business logic and mapping
 
-- **Total Employees** → total employee records
-- **Active Employees** → employees whose `active` flag is true
-- **Departments** → distinct non-empty departments
-- **Active Payroll** → sum of salaries for active employees
+src/main/resources/
+├── static/        # Dashboard, add/edit UI and JS
+├── templates/     # Login page
+├── application.properties
+└── application-prod.properties
 
-This fixes the previous static/empty dashboard statistics problem by providing a dedicated `/employees/stats` backend endpoint and connecting the frontend cards to it.
+docs/              # API and architecture documentation
+Dockerfile
+Docker Compose
+```
 
-## 📸 Portfolio Screenshots
+## 📸 Portfolio screenshots
 
-For a strong GitHub portfolio, capture screenshots from the real running application:
+Capture these from the real running application:
 
-1. Login screen
-2. Dashboard with populated statistics
-3. Employee directory
+1. Login with role-based account
+2. Dashboard analytics
+3. Search/filter/pagination
 4. Add employee form
-5. Successful create/delete operation
-
-## 🔭 Roadmap
-
-- Employee update endpoint
-- Search, filtering and pagination
-- DTO layer and global exception handling
-- Persistent users and database-backed roles
-- Audit logging
-- Docker Compose for application + MySQL
-- OpenAPI / Swagger documentation
+5. Edit employee
+6. Swagger UI
+7. MySQL-backed role behavior
 
 ## 👨‍💻 Author
 
