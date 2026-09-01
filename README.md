@@ -214,6 +214,19 @@ Capture these from the real running application:
 6. Swagger UI
 7. MySQL-backed role behavior
 
+## 🔍 Pre-commit checklist
+
+Before pushing backend or UI changes:
+
+- [ ] Run `mvn clean test`
+- [ ] Verify login and role permissions
+- [ ] Verify dashboard counts and analytics
+- [ ] Verify employee CRUD and validation
+- [ ] Verify search/filter/pagination
+- [ ] Check Swagger/OpenAPI endpoints
+- [ ] Confirm no credentials or secrets are committed
+- [ ] Verify Docker Compose configuration when deployment files change
+
 ## 👨‍💻 Author
 
 **Mayur Bhand**
