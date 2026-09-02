@@ -161,6 +161,18 @@ SERVER_PORT=8080
 
 Production configuration intentionally uses `validate` rather than automatically modifying the schema. Apply schema migrations through a migration tool before deploying major database changes.
 
+### Deployment verification
+
+After deployment, verify the application in this order:
+
+1. Confirm the application health endpoint responds successfully.
+2. Sign in with an appropriate role and verify authentication.
+3. Confirm dashboard totals match the database records.
+4. Verify employee search, filters and pagination.
+5. Verify create/update permissions for ADMIN and HR.
+6. Verify delete is restricted to ADMIN.
+7. Check Swagger/OpenAPI endpoints and application logs for errors.
+
 ## 📚 API & Swagger
 
 When running locally:
