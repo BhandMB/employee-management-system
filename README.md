@@ -127,16 +127,25 @@ Change these passwords through environment variables before any shared or produc
 
 ## 🐳 Docker Compose
 
-Build the application first, then start both services:
+Build the application first, then set the required secrets before starting Compose:
 
 ```bash
 mvn clean package -DskipTests
+```
+
+PowerShell:
+
+```powershell
+$env:DB_PASSWORD="strong-mysql-password"
+$env:APP_ADMIN_PASSWORD="strong-admin-password"
+$env:APP_HR_PASSWORD="strong-hr-password"
+$env:APP_EMPLOYEE_PASSWORD="strong-employee-password"
 docker compose up --build
 ```
 
-The application will be available on port `8080` and MySQL on `3306`. Compose persists database data in the `mysql_data` volume.
+Compose intentionally fails fast when these variables are missing; it does not provide fallback passwords. The application will be available on port `8080` and MySQL on `3306`. Compose persists database data in the `mysql_data` volume.
 
-For production, set strong values for `DB_PASSWORD`, `APP_ADMIN_PASSWORD`, `APP_HR_PASSWORD` and `APP_EMPLOYEE_PASSWORD` rather than using defaults.
+Never commit these secrets to source control. Use a secrets manager or environment-injection mechanism for shared and production deployments.
 
 ## ☁️ Production deployment
 
