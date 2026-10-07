@@ -117,13 +117,15 @@ Open `http://localhost:8080/`.
 
 ### Demo accounts
 
-| Username | Role | Default development password |
-|---|---|---|
-| admin | ADMIN | admin123 |
-| hr | HR | hr123 |
-| employee | EMPLOYEE | employee123 |
+Demo users are seeded only when missing. Their passwords should be supplied through environment variables; do not rely on hard-coded credentials outside a local development environment.
 
-Change these passwords through environment variables before any shared or production deployment.
+| Username | Role |
+|---|---|
+| admin | ADMIN |
+| hr | HR |
+| employee | EMPLOYEE |
+
+For shared or production environments, set strong unique values for `APP_ADMIN_PASSWORD`, `APP_HR_PASSWORD`, and `APP_EMPLOYEE_PASSWORD` before starting the application.
 
 ## 🐳 Docker Compose
 
