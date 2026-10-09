@@ -30,3 +30,12 @@ jobs:
         run: mvn --batch-mode clean verify
       - name: Build Docker image
         run: docker build -t employee-management:${{ github.sha }} .
+
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: surefire-test-reports
+          path: target/surefire-reports/*.xml
+          if-no-files-found: warn
+          retention-days: 7
