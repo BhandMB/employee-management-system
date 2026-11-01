@@ -1,0 +1,1 @@
+HRMS: document authorization test matrix
